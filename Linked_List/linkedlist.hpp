@@ -1,9 +1,8 @@
-#pragma once
 #include "list.hpp"
 #include "node.hpp"
 #include <stdexcept>
 #include <iostream>
-#include <string>
+using namespace std;
 class SinglyLinkedList : public List{
 	node* head;
 	node* tail;
@@ -42,7 +41,7 @@ class SinglyLinkedList : public List{
 
 		int removeLast() {
 			if (!tail) {
-				throw std::logic_error("Cannot remove from empty list");
+				throw logic_error("Cannot remove from empty list");
 			}
 			int ret = tail->elem;
 			if (tail == head) {
@@ -63,8 +62,8 @@ class SinglyLinkedList : public List{
 		}
 
 		int removeFirst() {
-		    if (!head) {
-				throw std::logic_error("Cannot remove from empty list");
+		    if (!tail) {
+				throw logic_error("Cannot remove from empty list");
 			}
 			int ret = head->elem;
 			node* tmp =  head;
@@ -83,7 +82,7 @@ class SinglyLinkedList : public List{
 		    
 		    if(pos > size || pos <= 0)
 		    {
-		        throw std::logic_error("Invalid position: " + std::to_string(pos));
+		        throw logic_error("Invalid position: " + to_string(pos));
 		    }
 		    else
 		    {
@@ -105,11 +104,41 @@ class SinglyLinkedList : public List{
 
 		void remove(int elem) {
 		    
-			return;
+		    node*curr=head;
+            node* prev = nullptr;
+            
+            while (curr){
+                if(curr->elem== elem){
+                    if(curr==head){
+                        head=head->next;
+                    }else{
+                        prev->next=curr->next;
+                    }
+                    if (curr==tail){
+                        tail=prev;
+                    }
+                    delete curr;
+                    size--;
+                    return;
+                }
+                prev=curr;
+                curr=curr->next;
+            }
 		}
 
 		int search(int elem) {
-
+		    
+		    node* curr = head;
+		    int index = 0;
+		    
+		    while (curr){
+		        if(curr->elem == elem){
+		            return index;
+		        }
+		        
+		        curr = curr->next;
+		        index++;
+		    }
 			return -1;
 		}
 
@@ -119,117 +148,14 @@ class SinglyLinkedList : public List{
 
 		void print() {
 			if (size == 0) {
-				std::cout << "Empty";
+				cout << "Empty";
 			}
 			for (node* curr = head; curr != nullptr; curr = curr->next) {
-				std::cout << curr->elem;
+				cout << curr->elem;
 				if (curr->next) {
-					std::cout << " -> ";
+					cout << " -> ";
 				}
 			}
-			std::cout << std::endl;
+			cout << endl;
 		}
-};
-class DoublyLinkedList : public List {
-	node* head;
-	node* tail;
-	int size;
-
-public:
-	DoublyLinkedList() {
-		head = nullptr;
-		tail = nullptr;
-		size = 0;
-	}
-
-	void addLast(int elem) {
-		node* n = new node;
-		n->elem = elem;
-		n->next = nullptr;
-		n->prev = tail;
-		if (tail) {
-			tail->next = n;
-		} else {
-			head = n;
-		}
-		tail = n;
-		size++;
-	}
-
-	void addFirst(int elem) {
-		node* n = new node;
-		n->elem = elem;
-		n->next = head;
-		n->prev = nullptr;
-		if (head) {
-			head->prev = n;
-		} else {
-			tail = n;
-		}
-		head = n;
-		size++;
-	}
-
-	int removeLast() {
-		if (!tail) {
-			throw std::logic_error("Cannot remove from empty list");
-		}
-		int ret = tail->elem;
-		node* tmp = tail;
-		tail = tail->prev;
-		if (tail) {
-			tail->next = nullptr;
-		} else {
-			head = nullptr;
-		}
-		delete tmp;
-		size--;
-		return ret;
-	}
-
-	int removeFirst() {
-		if (!head) {
-			throw std::logic_error("Cannot remove from empty list");
-		}
-		int ret = head->elem;
-		node* tmp = head;
-		head = head->next;
-		if (head) {
-			head->prev = nullptr;
-		} else {
-			tail = nullptr;
-		}
-		delete tmp;
-		size--;
-		return ret;
-	}
-
-	int get(int pos) {
-		if (pos > size || pos <= 0) {
-			throw std::logic_error("Invalid position: " + std::to_string(pos));
-		}
-		node* curr = head;
-		int index = 1;
-		while (curr != nullptr) {
-			if (index == pos) {
-				return curr->elem;
-			}
-			curr = curr->next;
-			index++;
-		}
-		return -1; // Should not reach
-	}
-
-	void print() {
-		if (size == 0) {
-			std::cout << "Empty";
-		}
-		for (node* curr = head; curr != nullptr; curr = curr->next) {
-			std::cout << curr->elem;
-			if (curr->next) {
-				std::cout << " -> ";
-			}
-		}
-		std::cout << std::endl;
-	}
 };
