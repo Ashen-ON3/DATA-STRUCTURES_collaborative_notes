@@ -146,6 +146,19 @@ class SinglyLinkedList : public List{
 			return size;
 		}
 
+		// int get(int index) {
+		// 	if (index < 0 || index >= size) {
+		// 		throw logic_error("Index out of bounds");
+		// 		return -1;
+		// 	}
+			
+		// 	node* curr = head;
+		// 	for (int i = 0; i < index; i++) {
+		// 		curr = curr->next;
+		// 	}
+		// 	return curr->elem;
+		// }
+
 		void print() {
 			if (size == 0) {
 				cout << "Empty";
